@@ -68,7 +68,7 @@ module ScraperWiki
 
   # Set configuration settings (only used to set the DB name right now)
   def config=(config_hash)
-    @config ||= config_hash
+    @config = config_hash
   end
 
   # Get configuration settings

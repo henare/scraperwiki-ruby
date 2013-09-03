@@ -19,6 +19,12 @@ describe ScraperWiki do
       ScraperWiki.config = :some_config
       ScraperWiki.instance_variable_get(:@config).should == :some_config
     end
+
+    it "should allow us to change the db setting" do
+      ScraperWiki.config = {db: "a_sqllite_db.sqlite"}
+      ScraperWiki.config = {db: "another_sqllite_db.sqlite"}
+      ScraperWiki.instance_variable_get(:@config).should == {db: "another_sqllite_db.sqlite"}
+    end
   end
 
   describe "#config" do
