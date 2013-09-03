@@ -7,6 +7,8 @@ require 'sqlite_magic'
 module ScraperWiki
   extend self
 
+  attr_accessor :config
+
   # The scrape method fetches the content from a webserver.
   #
   # === Parameters
@@ -64,20 +66,6 @@ module ScraperWiki
         hsh
       end
     end
-  end
-
-  # Set configuration settings and switch the DB if it's been set
-  def config=(config_hash)
-    @config = config_hash
-
-    if config_hash.is_a?(Hash) && config[:db]
-      sqlite_magic_connection(true)
-    end
-  end
-
-  # Get configuration settings
-  def config
-    @config
   end
 
   # Saves the provided data into a local database for this scraper. Data is upserted
@@ -184,13 +172,17 @@ module ScraperWiki
   end
 
   # Establish an SQLiteMagic::Connection (and remember it)
-  def sqlite_magic_connection(reestablish = false)
+  def sqlite_magic_connection
     db = @config ? @config[:db] : 'scraperwiki.sqlite'
 
-    if reestablish
-      @sqlite_magic_connection = SqliteMagic::Connection.new(db)
+    # Reestablish the DB connection if the config for the filename has
+    # changed. Unfortunately I can't see how to get the current connection's
+    # filename, hence this hackiness
+    if @sqlite_magic_connection && db == @database_filename
+      @sqlite_magic_connection
     else
-      @sqlite_magic_connection ||= SqliteMagic::Connection.new(db)
+      @database_filename = db
+      @sqlite_magic_connection = SqliteMagic::Connection.new(@database_filename)
     end
   end
 end
