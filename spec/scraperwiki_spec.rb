@@ -67,6 +67,12 @@ describe ScraperWiki do
       ScraperWiki.sqlite_magic_connection
     end
 
+    it 'should change the connection if the configuration changes' do
+      SqliteMagic::Connection.should_receive(:new).with('scraperwiki.sqlite').and_return(@dummy_sqlite_magic_connection)
+      ScraperWiki.sqlite_magic_connection
+      SqliteMagic::Connection.should_receive(:new).with('/some/location/of/sqlite_file.db').and_return(@dummy_sqlite_magic_connection)
+      ScraperWiki.config = {:db => '/some/location/of/sqlite_file.db'}
+    end
   end
 
   describe '#select' do

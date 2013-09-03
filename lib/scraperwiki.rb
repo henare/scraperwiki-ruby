@@ -66,9 +66,13 @@ module ScraperWiki
     end
   end
 
-  # Set configuration settings (only used to set the DB name right now)
+  # Set configuration settings and switch the DB if it's been set
   def config=(config_hash)
     @config = config_hash
+
+    if config_hash.is_a?(Hash) && config[:db]
+      sqlite_magic_connection(true)
+    end
   end
 
   # Get configuration settings
@@ -180,9 +184,13 @@ module ScraperWiki
   end
 
   # Establish an SQLiteMagic::Connection (and remember it)
-  def sqlite_magic_connection
+  def sqlite_magic_connection(reestablish = false)
     db = @config ? @config[:db] : 'scraperwiki.sqlite'
-    @sqlite_magic_connection ||= SqliteMagic::Connection.new(db)
-  end
 
+    if reestablish
+      @sqlite_magic_connection = SqliteMagic::Connection.new(db)
+    else
+      @sqlite_magic_connection ||= SqliteMagic::Connection.new(db)
+    end
+  end
 end
