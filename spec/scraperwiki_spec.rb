@@ -51,9 +51,12 @@ describe ScraperWiki do
     end
 
     context 'and config set' do
+      before do
+        ScraperWiki.config = {:db => '/some/location/of/sqlite_file.db'}
+      end
+
       it 'should get an SqliteMagic::Connection with db set in config' do
         SqliteMagic::Connection.should_receive(:new).with('/some/location/of/sqlite_file.db').and_return(@dummy_sqlite_magic_connection)
-        ScraperWiki.config = {:db => '/some/location/of/sqlite_file.db'}
         ScraperWiki.sqlite_magic_connection
       end
     end
