@@ -66,9 +66,16 @@ module ScraperWiki
     end
   end
 
+  # Set configuration settings (only used to set the DB name right now)
   def config=(config_hash)
     @config ||= config_hash
   end
+
+  # Get configuration settings
+  def config
+    @config
+  end
+
   # Saves the provided data into a local database for this scraper. Data is upserted
   # into this table (inserted if it does not exist, updated if the unique keys say it
   # does).

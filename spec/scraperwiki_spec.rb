@@ -22,9 +22,17 @@ describe ScraperWiki do
   end
 
   describe "#config" do
-    it "should return the configuration settings" do
-      ScraperWiki.config = :some_config
-      ScraperWiki.config == :some_config
+    context "configuration settings are set" do
+      it "should return the configuration settings" do
+        ScraperWiki.config = :some_config
+        ScraperWiki.config == :some_config
+      end
+    end
+
+    context "no configuration settings set" do
+      it "should return blank configuration settings" do
+        ScraperWiki.config == nil
+      end
     end
   end
 
