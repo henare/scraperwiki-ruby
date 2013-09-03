@@ -19,7 +19,13 @@ describe ScraperWiki do
       ScraperWiki.config = :some_config
       ScraperWiki.instance_variable_get(:@config).should == :some_config
     end
+  end
 
+  describe "#config" do
+    it "should return the configuration settings" do
+      ScraperWiki.config = :some_config
+      ScraperWiki.config == :some_config
+    end
   end
 
   describe 'sqlite_magic_connection' do
