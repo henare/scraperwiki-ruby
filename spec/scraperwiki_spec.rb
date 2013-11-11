@@ -283,6 +283,10 @@ describe ScraperWiki do
         expected_result = [{:foo => 'bar', :date_val => date.iso8601, :time_val => time.utc.iso8601.sub(/([+-]00:00|Z)$/, ''), :datetime_val => datetime.to_s}]
         ScraperWiki.convert_data(values_hash).should == expected_result
       end
+
+      it "should convert booleans to integers" do
+        ScraperWiki.convert_data({:true => true, :false => false}).should == [{:true => 1, :false => 0}]
+      end
     end
 
     context 'and passed an array of hashes' do
@@ -297,6 +301,10 @@ describe ScraperWiki do
         values_array = [{:foo => 'bar', :date_val => date}, {:time_val => time, :datetime_val => datetime}]
         expected_result = [{:foo => 'bar', :date_val => date.iso8601}, {:time_val => time.utc.iso8601.sub(/([+-]00:00|Z)$/,''), :datetime_val => datetime.to_s}]
         ScraperWiki.convert_data(values_array).should == expected_result
+      end
+
+      it "should convert booleans to integers" do
+        ScraperWiki.convert_data([{:true => true}, {:false => false}]).should == [{:true => 1}, {:false => 0}]
       end
     end
   end

@@ -60,6 +60,10 @@ module ScraperWiki
           when Time
             # maintains existing ScraperWiki behaviour
             v.iso8601.sub(/([+-]00:00|Z)$/, '')
+          when true
+            1
+          when false
+            0
           else
             v
           end
